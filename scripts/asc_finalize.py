@@ -31,12 +31,14 @@ import jwt
 # === EDIT ME PER APP ===
 APP_ID         = "6767774134"
 BUNDLE_ID      = "com.atrium.sololock"
-VERSION_STRING = "1.0.0"
+# ASC auto-creates a "1.0" record at app creation time. Match it rather
+# than create a duplicate "1.0.0" — Apple rejects two open versions.
+VERSION_STRING = "1.0"
 APP_DISPLAY_NAME = "Solo Lock: Focus Without Apps"
 
 SUBTITLE       = "Beat phone addiction · solo"
-KEYWORDS       = ("screen time control,block apps,phone addiction,focus mode,"
-                  "stop scrolling,social media detox,digital wellbeing,deep work")
+# Apple keyword field is 100 chars max. Order = highest-volume first per CONCEPT.md.
+KEYWORDS       = "block apps,phone addiction,screen time,focus mode,stop scrolling,social detox"
 PROMO_TEXT     = ("Set a goal. Lock yourself in. No friend required. Pick a "
                   "lockmaster — AI judge, random delay, or charity — and your "
                   "selected apps shield until the timer ends.")
