@@ -1,0 +1,89 @@
+name: SoloLock
+options:
+  bundleIdPrefix: com.atrium
+  deploymentTarget:
+    iOS: "17.0"
+  developmentLanguage: en
+  groupSortPosition: top
+  createIntermediateGroups: true
+
+settings:
+  base:
+    SWIFT_VERSION: "5.10"
+    IPHONEOS_DEPLOYMENT_TARGET: "17.0"
+    TARGETED_DEVICE_FAMILY: "1,2"
+    SWIFT_STRICT_CONCURRENCY: minimal
+    GCC_TREAT_WARNINGS_AS_ERRORS: NO
+    SWIFT_TREAT_WARNINGS_AS_ERRORS: NO
+    ENABLE_HARDENED_RUNTIME: NO
+    ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+    ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+
+targets:
+  SoloLock:
+    type: application
+    platform: iOS
+    sources:
+      - path: SoloLock/App
+      - path: SoloLock/Engine
+      - path: SoloLock/Models
+      - path: SoloLock/Persistence
+      - path: SoloLock/Subscription
+      - path: SoloLock/Theme
+      - path: SoloLock/Views
+      - path: SoloLock/Resources/Assets.xcassets
+        buildPhase: resources
+      - path: SoloLock/Resources/SoloLock.storekit
+        buildPhase: resources
+        optional: true
+    info:
+      path: SoloLock/Resources/Info.plist
+      properties:
+        CFBundleDisplayName: Solo Lock
+        CFBundleShortVersionString: "$(MARKETING_VERSION)"
+        CFBundleVersion: "$(CURRENT_PROJECT_VERSION)"
+        LSRequiresIPhoneOS: true
+        UIRequiresFullScreen: false
+        ITSAppUsesNonExemptEncryption: false
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+        UILaunchScreen:
+          UIColorName: vault
+        UIApplicationSceneManifest:
+          UIApplicationSupportsMultipleScenes: false
+        NSAppTransportSecurity:
+          NSAllowsArbitraryLoads: false
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.atrium.sololock
+        PRODUCT_NAME: SoloLock
+        MARKETING_VERSION: "1.0.0"
+        CURRENT_PROJECT_VERSION: "1"
+        GENERATE_INFOPLIST_FILE: NO
+        CODE_SIGN_STYLE: Automatic
+
+  SoloLockTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: SoloLockTests
+    settings:
+      base:
+        PRODUCT_NAME: SoloLockTests
+        PRODUCT_BUNDLE_IDENTIFIER: com.atrium.sololock.tests
+        GENERATE_INFOPLIST_FILE: YES
+        SWIFT_STRICT_CONCURRENCY: minimal
+        TEST_HOST: $(BUILT_PRODUCTS_DIR)/SoloLock.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/SoloLock
+        BUNDLE_LOADER: $(TEST_HOST)
+    dependencies:
+      - target: SoloLock
+
+schemes:
+  SoloLock:
+    build:
+      targets:
+        SoloLock: all
+        SoloLockTests: [test]
+    test:
+      targets:
+        - SoloLockTests

@@ -1,0 +1,326 @@
+:root {
+    --vault: #22272B;
+    --vault-deep: #14171A;
+    --brass: #B59252;
+    --open-green: #3F6B4A;
+    --sos-red: #A8482F;
+    --cream: #F4F1EA;
+    --text-secondary: rgba(244, 241, 234, 0.62);
+    --text-tertiary: rgba(244, 241, 234, 0.38);
+    --hairline: rgba(244, 241, 234, 0.10);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+    background: var(--vault);
+    color: var(--cream);
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+    line-height: 1.55;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+}
+
+body {
+    background:
+        radial-gradient(ellipse at center, rgba(34,39,43,0) 0%, var(--vault-deep) 80%),
+        var(--vault);
+    min-height: 100vh;
+}
+
+a { color: var(--brass); text-decoration: none; transition: opacity .15s; }
+a:hover { opacity: 0.75; }
+
+.container {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+/* Header */
+
+.site-header {
+    padding: 28px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: "New York", Georgia, "Times New Roman", serif;
+    font-size: 22px;
+    color: var(--cream);
+}
+.brand-mark {
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    background: var(--brass);
+    display: grid;
+    place-items: center;
+    color: var(--vault-deep);
+    font-weight: 700;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+}
+.nav { display: flex; gap: 22px; font-size: 14px; }
+.nav a { color: var(--text-secondary); }
+.nav a:hover { color: var(--cream); }
+
+/* Hero */
+
+.hero {
+    padding: 80px 0 64px;
+    text-align: center;
+}
+.hero h1 {
+    font-family: "New York", Georgia, "Times New Roman", serif;
+    font-size: clamp(40px, 6vw, 72px);
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    line-height: 1.05;
+    margin-bottom: 22px;
+}
+.hero .tagline {
+    font-size: clamp(17px, 2.2vw, 21px);
+    color: var(--text-secondary);
+    max-width: 560px;
+    margin: 0 auto 36px;
+}
+.hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 26px;
+    background: var(--brass);
+    color: var(--vault-deep);
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 16px;
+    transition: transform .15s ease;
+}
+.hero-cta:hover { transform: translateY(-1px); opacity: 1; }
+
+/* Lock glyph */
+
+.lock-glyph {
+    width: 140px;
+    height: 140px;
+    margin: 0 auto 40px;
+    display: block;
+    filter: drop-shadow(0 12px 24px rgba(0,0,0,0.5));
+}
+
+/* Features */
+
+.section {
+    padding: 64px 0;
+    border-top: 1px solid var(--hairline);
+}
+.section-label {
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    color: var(--brass);
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 14px;
+}
+.section h2 {
+    font-family: "New York", Georgia, "Times New Roman", serif;
+    font-size: clamp(28px, 4vw, 40px);
+    font-weight: 400;
+    margin-bottom: 36px;
+    max-width: 580px;
+    line-height: 1.15;
+}
+
+.features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 18px;
+}
+.feature {
+    background: var(--vault-deep);
+    border: 1px solid var(--hairline);
+    border-radius: 16px;
+    padding: 24px;
+}
+.feature h3 {
+    font-family: "New York", Georgia, "Times New Roman", serif;
+    font-size: 20px;
+    font-weight: 400;
+    margin-bottom: 6px;
+    color: var(--cream);
+}
+.feature .role {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: var(--brass);
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 12px;
+    display: block;
+}
+.feature p {
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+/* Lockmasters table */
+.lockmasters {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 14px;
+}
+.lockmaster {
+    background: var(--vault-deep);
+    border: 1px solid var(--hairline);
+    border-radius: 16px;
+    padding: 22px;
+    display: flex;
+    gap: 14px;
+}
+.lockmaster .icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--vault);
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    font-size: 22px;
+    color: var(--brass);
+}
+.lockmaster .title {
+    font-family: "New York", Georgia, "Times New Roman", serif;
+    font-size: 18px;
+    margin-bottom: 4px;
+}
+.lockmaster .sub {
+    color: var(--text-secondary);
+    font-size: 13px;
+    line-height: 1.45;
+}
+
+/* Anti-features */
+.anti {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    color: var(--text-secondary);
+    font-size: 15px;
+}
+.anti li { list-style: none; padding-left: 28px; position: relative; }
+.anti li::before {
+    content: "✗";
+    position: absolute; left: 0;
+    color: var(--sos-red);
+    font-weight: 700;
+}
+
+/* Pricing */
+.pricing {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 14px;
+}
+.tier {
+    background: var(--vault-deep);
+    border: 1px solid var(--hairline);
+    border-radius: 16px;
+    padding: 24px;
+    text-align: center;
+}
+.tier.featured {
+    border-color: var(--brass);
+    border-width: 1.5px;
+    position: relative;
+}
+.tier.featured::before {
+    content: "BEST VALUE";
+    position: absolute;
+    top: -10px; left: 50%;
+    transform: translateX(-50%);
+    background: var(--brass);
+    color: var(--vault-deep);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    padding: 4px 10px;
+    border-radius: 4px;
+}
+.tier h3 {
+    font-family: "New York", Georgia, "Times New Roman", serif;
+    font-size: 18px;
+    font-weight: 400;
+    margin-bottom: 4px;
+}
+.tier .price {
+    font-family: "SF Mono", Menlo, monospace;
+    font-size: 32px;
+    color: var(--cream);
+    margin: 12px 0 6px;
+}
+.tier .period {
+    font-size: 12px;
+    color: var(--text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+/* Footer */
+.site-footer {
+    padding: 48px 0 32px;
+    border-top: 1px solid var(--hairline);
+    margin-top: 48px;
+    color: var(--text-tertiary);
+    font-size: 13px;
+}
+.site-footer .links {
+    display: flex;
+    gap: 22px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+}
+.site-footer .links a { color: var(--text-secondary); }
+
+/* Long-form pages (privacy, terms, support) */
+.longform {
+    padding: 48px 0;
+}
+.longform h1 {
+    font-family: "New York", Georgia, "Times New Roman", serif;
+    font-size: 36px;
+    font-weight: 400;
+    margin-bottom: 8px;
+}
+.longform .updated {
+    color: var(--text-tertiary);
+    font-size: 13px;
+    margin-bottom: 32px;
+}
+.longform h2 {
+    font-family: "New York", Georgia, "Times New Roman", serif;
+    font-size: 22px;
+    font-weight: 400;
+    margin: 32px 0 12px;
+    color: var(--cream);
+}
+.longform p, .longform li {
+    color: var(--text-secondary);
+    font-size: 15px;
+    margin-bottom: 12px;
+    line-height: 1.7;
+}
+.longform ul {
+    padding-left: 22px;
+    margin-bottom: 12px;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .hero { padding: 56px 0 40px; }
+    .section { padding: 48px 0; }
+}

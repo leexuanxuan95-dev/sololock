@@ -1,0 +1,19 @@
+# Xcode
+build/
+DerivedData/
+*.xcodeproj/
+xcuserdata/
+*.xcuserstate
+*.xcuserdatad/
+*.xcworkspace/xcuserdata/
+
+# Generated
+SoloLock.xcodeproj
+*.xcuserstate
+
+# macOS
+.DS_Store
+
+# fastlane
+fastlane/report.xml
+fastlane/screenshots/**/*.png
