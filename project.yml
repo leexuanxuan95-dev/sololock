@@ -45,6 +45,10 @@ targets:
         CFBundleDisplayName: Solo Lock
         CFBundleShortVersionString: "$(MARKETING_VERSION)"
         CFBundleVersion: "$(CURRENT_PROJECT_VERSION)"
+        # iOS 11+ asset-catalog icons require this to point at the
+        # AppIcon.appiconset name. Without it altool rejects with
+        # ITMS-90713 "Missing Info.plist value CFBundleIconName".
+        CFBundleIconName: AppIcon
         LSRequiresIPhoneOS: true
         UIRequiresFullScreen: false
         ITSAppUsesNonExemptEncryption: false
@@ -61,7 +65,7 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: com.atrium.sololock
         PRODUCT_NAME: SoloLock
         MARKETING_VERSION: "1.0.0"
-        CURRENT_PROJECT_VERSION: "1"
+        CURRENT_PROJECT_VERSION: "3"
         GENERATE_INFOPLIST_FILE: NO
         # Repeat per-target so it survives extension targets later.
         TARGETED_DEVICE_FAMILY: "1"
