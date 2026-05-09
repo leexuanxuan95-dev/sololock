@@ -87,11 +87,46 @@ To preview the takeover that *would* appear on a real device when a blocked app 
 ## Tests
 
 ```bash
-xcodebuild test -scheme SoloLock -destination 'platform=iOS Simulator,name=iPhone 15 Pro'
+xcodebuild test -scheme SoloLock -destination 'platform=iOS Simulator,name=iPhone 17 Pro'
 ```
 
 - `JudgeEngineTests` — classifier mappings, non-empty replies, billion-scale variety, anti-repeat dampening.
 - `SessionTests` — `heldSeconds`, progress monotonicity, store round-trip, stats aggregation.
+- `EdgeCaseTests` — every duration value, every Lockmaster gating rule, progress clamping with zero-duration, store insert/replace/delete/sort, every intent's reply, anti-repeat reset, lowercase+punctuation tone, SubscriptionStore non-crash.
+- `SoloLockUITests` — 5 end-to-end flows that drive every screen and screenshot each: onboarding, picker, explainer, setup, lock, judge chat, charity setup, history, settings, paywall.
+
+## App Store deployment
+
+Full runbook at [scripts/APP_STORE_DEPLOY_RUNBOOK.md](scripts/APP_STORE_DEPLOY_RUNBOOK.md). Quick path:
+
+```bash
+source scripts/env.sh                                 # set per-app + ASC API env
+
+# 1. Create the app at https://appstoreconnect.apple.com → My Apps → "+ New App"
+#    Bundle ID: com.atrium.sololock · Name: Solo Lock: Focus Without Apps
+#    Then write the numeric App ID into scripts/env.sh APP_ID + the
+#    PER_APP block at the top of asc_finalize.py / asc_create_iap.py /
+#    asc_create_subscriptions.py.
+
+# 2. Generate App Store screenshots from the UI tests.
+bash scripts/screenshots.sh                           # outputs to fastlane/screenshots/en-US
+
+# 3. Configure all three IAPs in ASC.
+python3 scripts/asc_create_iap.py                     # lifetime $59 NON_CONSUMABLE
+python3 scripts/asc_create_subscriptions.py --all-territories
+                                                      # monthly $4.99 + yearly $24.99
+                                                      # (--all-territories is required
+                                                      # for subs to reach READY_TO_SUBMIT)
+
+# 4. Build, archive, upload.
+bash scripts/archive_upload.sh                        # then wait 5–15 min for Apple processing
+
+# 5. Push metadata, then submit.
+python3 scripts/asc_finalize.py                       # push only — eyeball ASC web UI
+python3 scripts/asc_finalize.py --submit              # submit version + IAP + sub group
+```
+
+Reviewer contact: Zhang Jiahao · jasperabundant@gmail.com · +60 17 702 3664.
 
 ## Anti-features (per CONCEPT.md)
 
