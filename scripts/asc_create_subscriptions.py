@@ -42,7 +42,8 @@ SUBS = [
         "subscriptionPeriod": "ONE_MONTH",
         "groupLevel":         2,                    # same level as yearly
         "usdPrice":           "4.99",
-        "locDescription":     "All four lockmasters, unlimited sessions, 4h+ durations.",
+        # ASC caps subscription description at 45 chars.
+        "locDescription":     "Unlimited sessions. All lockmasters.",
         "introOffer":         None,
         "reviewNote":         REVIEW_NOTE_BASE,
     },
@@ -52,7 +53,7 @@ SUBS = [
         "subscriptionPeriod": "ONE_YEAR",
         "groupLevel":         2,
         "usdPrice":           "24.99",
-        "locDescription":     "All Pro features, billed annually. ~58% savings vs monthly.",
+        "locDescription":     "All Pro features. Annual billing.",
         "introOffer":         None,
         "reviewNote":         REVIEW_NOTE_BASE,
     },
@@ -167,11 +168,16 @@ def upsert_localization(sub_id, spec):
 
 def find_price_point(sub_id, target_usd):
     url = f"/v1/subscriptions/{sub_id}/pricePoints?filter[territory]=USA&limit=200"
+    target = float(target_usd)
     while url:
         data = api("GET", url)
         for p in data.get("data", []):
-            if p["attributes"].get("customerPrice") == target_usd:
-                return p["id"]
+            cp = p["attributes"].get("customerPrice")
+            try:
+                if abs(float(cp) - target) < 0.005:
+                    return p["id"]
+            except (TypeError, ValueError):
+                continue
         nxt = data.get("links", {}).get("next")
         url = nxt.replace("https://api.appstoreconnect.apple.com", "") if nxt else None
     return None

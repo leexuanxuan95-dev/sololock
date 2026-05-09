@@ -71,21 +71,42 @@ struct PaywallView: View {
 
     private var plans: some View {
         VStack(spacing: 10) {
-            ForEach(subs.products, id: \.id) { p in
-                PlanRow(
-                    product: p,
-                    selected: selectedID == p.id,
-                    isYearly: p.id == SubscriptionStore.yearlyID
-                )
-                .onTapGesture {
-                    Haptics.tap()
-                    selectedID = p.id
-                }
-            }
             if subs.products.isEmpty {
-                Text(subs.loadError ?? "loading plans…")
-                    .font(Typography.sohne(13))
-                    .foregroundColor(Palette.textSecondary)
+                // StoreKit hasn't loaded yet (or is offline). Show static
+                // fallbacks so the paywall always renders the offering and
+                // App Review screenshots aren't blank "loading…" placeholders.
+                FallbackPlanRow(id: SubscriptionStore.monthlyID,
+                                title: "Pro Monthly", subtitle: "All Pro features.",
+                                price: "$4.99", badge: nil,
+                                selected: selectedID == SubscriptionStore.monthlyID)
+                    .onTapGesture { Haptics.tap(); selectedID = SubscriptionStore.monthlyID }
+                FallbackPlanRow(id: SubscriptionStore.yearlyID,
+                                title: "Pro Yearly", subtitle: "Billed annually. ~58% savings.",
+                                price: "$24.99", badge: "BEST VALUE",
+                                selected: selectedID == SubscriptionStore.yearlyID)
+                    .onTapGesture { Haptics.tap(); selectedID = SubscriptionStore.yearlyID }
+                FallbackPlanRow(id: SubscriptionStore.lifetimeID,
+                                title: "Lifetime", subtitle: "One-time purchase.",
+                                price: "$59", badge: nil,
+                                selected: selectedID == SubscriptionStore.lifetimeID)
+                    .onTapGesture { Haptics.tap(); selectedID = SubscriptionStore.lifetimeID }
+                if let err = subs.loadError {
+                    Text(err)
+                        .font(Typography.sohne(11))
+                        .foregroundColor(Palette.textTertiary)
+                }
+            } else {
+                ForEach(subs.products, id: \.id) { p in
+                    PlanRow(
+                        product: p,
+                        selected: selectedID == p.id,
+                        isYearly: p.id == SubscriptionStore.yearlyID
+                    )
+                    .onTapGesture {
+                        Haptics.tap()
+                        selectedID = p.id
+                    }
+                }
             }
         }
     }
@@ -97,14 +118,18 @@ struct PaywallView: View {
             } label: {
                 HStack {
                     if purchasing { ProgressView().tint(Palette.vaultDeep) }
-                    Text("subscribe")
+                    Text(ctaTitle)
                 }
             }
             .buttonStyle(BrassButtonStyle())
-            .disabled(purchasing || subs.products.isEmpty)
+            .disabled(purchasing)
             Button("restore purchases") { Task { await subs.restore() } }
                 .buttonStyle(GhostButtonStyle())
         }
+    }
+
+    private var ctaTitle: String {
+        selectedID == SubscriptionStore.lifetimeID ? "buy lifetime" : "subscribe"
     }
 
     private var footer: some View {
@@ -137,6 +162,63 @@ private struct BulletRow: View {
                 .foregroundColor(Palette.cream)
             Spacer()
         }
+    }
+}
+
+/// Same layout as PlanRow but driven by hard-coded values (used while
+/// StoreKit hasn't returned products yet, or when the device is offline).
+private struct FallbackPlanRow: View {
+    let id: String
+    let title: String
+    let subtitle: String
+    let price: String
+    let badge: String?
+    let selected: Bool
+
+    var body: some View {
+        HStack(spacing: 12) {
+            ZStack {
+                Circle()
+                    .stroke(selected ? Palette.brass : Palette.hairline, lineWidth: 1.5)
+                    .frame(width: 22, height: 22)
+                if selected {
+                    Circle().fill(Palette.brass).frame(width: 12, height: 12)
+                }
+            }
+            VStack(alignment: .leading, spacing: 2) {
+                HStack(spacing: 8) {
+                    Text(title)
+                        .font(Typography.sohne(15, weight: .semibold))
+                        .foregroundColor(Palette.cream)
+                    if let badge {
+                        Text(badge)
+                            .font(Typography.sohne(9, weight: .bold))
+                            .tracking(1.2)
+                            .foregroundColor(Palette.vaultDeep)
+                            .padding(.horizontal, 6).padding(.vertical, 2)
+                            .background(RoundedRectangle(cornerRadius: 4).fill(Palette.brass))
+                    }
+                }
+                Text(subtitle)
+                    .font(Typography.sohne(12))
+                    .foregroundColor(Palette.textSecondary)
+            }
+            Spacer()
+            Text(price)
+                .font(Typography.plexMono(15, weight: .medium))
+                .foregroundColor(Palette.cream)
+        }
+        .padding(14)
+        .background(
+            RoundedRectangle(cornerRadius: 12, style: .continuous)
+                .fill(Palette.vaultDeep)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 12, style: .continuous)
+                        .stroke(selected ? Palette.brass : Palette.hairline,
+                                lineWidth: selected ? 1.5 : 1)
+                )
+        )
+        .accessibilityIdentifier("plan.\(id)")
     }
 }
 

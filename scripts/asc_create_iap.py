@@ -29,9 +29,8 @@ IAP_TYPE          = "NON_CONSUMABLE"
 USD_PRICE         = "59.00"
 
 DISPLAY_NAME      = "Solo Lock Pro · Lifetime"
-DESCRIPTION       = ("Pay once, every Pro feature forever. All four lockmasters, "
-                     "unlimited sessions per day, 4h / 8h / overnight durations, "
-                     "Live Activity, Apple Watch, history insights.")
+# IAP description max 55 chars per ASC API.
+DESCRIPTION       = "All Pro features, forever. One-time purchase."
 REVIEW_NOTE       = (
     "Solo Lock Pro Lifetime: NON_CONSUMABLE, one-time $59 unlock for all Pro "
     "features. To test: open the app → tap Settings tab → tap 'see plans' → "
@@ -82,7 +81,7 @@ def api(method, path, *, body=None, expect=(200, 201, 204)):
 # ---------- IAP ----------
 
 def get_or_create_iap():
-    iaps = api("GET", f"/v2/apps/{APP_ID}/inAppPurchases?limit=200")
+    iaps = api("GET", f"/v1/apps/{APP_ID}/inAppPurchasesV2?limit=200")
     for d in iaps.get("data", []):
         if d["attributes"].get("productId") == PRODUCT_ID:
             print(f"  ✓ {PRODUCT_ID} exists (id {d['id']}, state {d['attributes'].get('state')})")
@@ -121,23 +120,31 @@ def upsert_localization(iap_id):
 # ---------- Price ----------
 
 def find_price_point(iap_id, target_usd):
-    url = f"/v1/inAppPurchases/{iap_id}/pricePoints?filter[territory]=USA&limit=200"
+    url = f"/v2/inAppPurchases/{iap_id}/pricePoints?filter[territory]=USA&limit=200"
+    target = float(target_usd)
     while url:
         data = api("GET", url)
         for p in data.get("data", []):
-            if p["attributes"].get("customerPrice") == target_usd:
-                return p["id"]
+            cp = p["attributes"].get("customerPrice")
+            try:
+                # Apple returns customerPrice as e.g. "59.0" while we send "59.00".
+                if abs(float(cp) - target) < 0.005:
+                    return p["id"]
+            except (TypeError, ValueError):
+                continue
         nxt = data.get("links", {}).get("next")
         url = nxt.replace("https://api.appstoreconnect.apple.com", "") if nxt else None
     return None
 
 
 def set_price(iap_id):
-    # Check if a schedule already exists.
-    existing = api("GET", f"/v2/inAppPurchases/{iap_id}/iapPriceSchedule",
-                   expect=(200, 404))
-    if existing.get("data"):
-        print(f"  ✓ price schedule already exists")
+    # Apple auto-creates an empty schedule shell at IAP creation time, so the
+    # iapPriceSchedule relationship always returns truthy data even when no
+    # prices are populated. Check manualPrices directly.
+    mp = api("GET", f"/v1/inAppPurchasePriceSchedules/{iap_id}/manualPrices",
+             expect=(200, 404))
+    if mp.get("data"):
+        print(f"  ✓ price schedule has {len(mp['data'])} manualPrices already")
         return
     pp = find_price_point(iap_id, USD_PRICE)
     if not pp:
@@ -147,16 +154,18 @@ def set_price(iap_id):
                      "relationships": {
                          "inAppPurchase":  {"data": {"type": "inAppPurchases", "id": iap_id}},
                          "baseTerritory":  {"data": {"type": "territories", "id": "USA"}},
-                         "manualPrices":   {"data": [{"type": "inAppPurchasePrices", "id": "${price-1}"}]},
-                         "automaticPrices":{"data": []}}},
-            "included": [{"type": "inAppPurchasePrices", "id": "${price-1}",
+                         "manualPrices":   {"data": [{"type": "inAppPurchasePrices", "id": "${new-price}"}]}}},
+            "included": [{"type": "inAppPurchasePrices", "id": "${new-price}",
                           "attributes": {"startDate": None},
                           "relationships": {
                               "inAppPurchasePricePoint": {
                                   "data": {"type": "inAppPurchasePricePoints", "id": pp}},
-                              "inAppPurchase": {"data": {"type": "inAppPurchases", "id": iap_id}}}}]}
-    api("POST", "/v1/inAppPurchasePriceSchedules", body=body)
-    print(f"  ✓ price schedule created (USD ${USD_PRICE} base, auto-derive other territories)")
+                              "inAppPurchaseV2": {"data": {"type": "inAppPurchases", "id": iap_id}}}}]}
+    res = api("POST", "/v1/inAppPurchasePriceSchedules", body=body)
+    if "_error" in res:
+        print(f"  ✗ price schedule POST failed: {res.get('_body','')[:300]}")
+    else:
+        print(f"  ✓ price schedule populated (USD ${USD_PRICE} base, auto-derive other territories)")
 
 
 # ---------- Availability ----------
