@@ -63,6 +63,7 @@ struct LockView: View {
                 }
                 .foregroundColor(Palette.textSecondary)
             }
+            .accessibilityIdentifier("lock.previewBlock")
         }
         .padding(.top, 8)
     }
@@ -103,11 +104,13 @@ struct LockView: View {
                     }
                 }
                 .buttonStyle(BrassButtonStyle(prominent: false))
+                .accessibilityIdentifier("lock.openChat")
             }
 
             EmergencyHoldButton {
                 showEmergency = true
             }
+            .accessibilityIdentifier("lock.emergency")
         }
     }
 

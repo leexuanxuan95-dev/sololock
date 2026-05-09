@@ -68,10 +68,11 @@ final class JudgeEngine {
         }
         // Update memo so callers don't have to do it themselves.
         context.recentHashes.insert(bestHash)
+        // Set has no insertion order, so "drop oldest" isn't meaningful. Once
+        // we've accumulated enough memory to dampen short-term repetition,
+        // wipe and start over. The next ~32 replies will repopulate it.
         if context.recentHashes.count > 32 {
-            // Trim oldest by re-creating with last 32 — Set has no order, so we
-            // just reset; the goal is to keep the dampener from blowing up.
-            context.recentHashes = Set(context.recentHashes.prefix(32))
+            context.recentHashes.removeAll(keepingCapacity: true)
         }
         return JudgeReply(text: best, intent: intent)
     }

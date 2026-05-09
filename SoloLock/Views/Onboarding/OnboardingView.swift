@@ -45,6 +45,7 @@ struct OnboardingView: View {
                 }
                 .buttonStyle(BrassButtonStyle())
                 .padding(.horizontal, 24)
+                .accessibilityIdentifier("onboarding.cta")
 
                 Text("works on this device · no account required")
                     .font(Typography.sohne(12))

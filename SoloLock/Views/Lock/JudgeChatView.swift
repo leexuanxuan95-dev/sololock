@@ -79,6 +79,7 @@ struct JudgeChatView: View {
                 )
                 .submitLabel(.send)
                 .onSubmit { send() }
+                .accessibilityIdentifier("chat.composer")
 
             Button {
                 send()
@@ -88,6 +89,7 @@ struct JudgeChatView: View {
                     .foregroundColor(canSend ? Palette.brass : Palette.textTertiary)
             }
             .disabled(!canSend)
+            .accessibilityIdentifier("chat.send")
         }
         .padding(.horizontal, 12)
         .padding(.bottom, 12)

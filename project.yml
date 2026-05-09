@@ -78,12 +78,30 @@ targets:
     dependencies:
       - target: SoloLock
 
+  SoloLockUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+      - path: SoloLockUITests
+    settings:
+      base:
+        PRODUCT_NAME: SoloLockUITests
+        PRODUCT_BUNDLE_IDENTIFIER: com.atrium.sololock.uitests
+        GENERATE_INFOPLIST_FILE: YES
+        SWIFT_STRICT_CONCURRENCY: minimal
+        TEST_TARGET_NAME: SoloLock
+
 schemes:
   SoloLock:
     build:
       targets:
         SoloLock: all
         SoloLockTests: [test]
+        SoloLockUITests: [test]
+    run:
+      storeKitConfiguration: SoloLock/Resources/SoloLock.storekit
     test:
       targets:
         - SoloLockTests
+        - SoloLockUITests
+      storeKitConfiguration: SoloLock/Resources/SoloLock.storekit

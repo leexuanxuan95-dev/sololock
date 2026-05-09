@@ -41,15 +41,9 @@ struct SessionSetupView: View {
         }
         .navigationTitle("")
         .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                Button {
-                    dismiss()
-                } label: {
-                    Image(systemName: "chevron.left").foregroundColor(Palette.cream)
-                }
-            }
-        }
+        // System back button is fine; hide the tab bar so "hand it over"
+        // isn't obscured at the bottom.
+        .toolbar(.hidden, for: .tabBar)
         .sheet(isPresented: $showPaywall) {
             PaywallView()
                 .presentationBackground(Palette.vault)
@@ -72,15 +66,18 @@ struct SessionSetupView: View {
         let cols = [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())]
         return LazyVGrid(columns: cols, spacing: 12) {
             ForEach(SessionDuration.allCases) { d in
-                DurationCell(duration: d, selected: duration == d, locked: d.isPro && !subs.isPro)
-                    .onTapGesture {
-                        Haptics.tap()
-                        if d.isPro && !subs.isPro {
-                            showPaywall = true
-                        } else {
-                            duration = d
-                        }
+                Button {
+                    Haptics.tap()
+                    if d.isPro && !subs.isPro {
+                        showPaywall = true
+                    } else {
+                        duration = d
                     }
+                } label: {
+                    DurationCell(duration: d, selected: duration == d, locked: d.isPro && !subs.isPro)
+                }
+                .buttonStyle(.plain)
+                .accessibilityIdentifier("duration.\(d.rawValue)")
             }
         }
     }
@@ -160,6 +157,7 @@ struct SessionSetupView: View {
         .buttonStyle(BrassButtonStyle())
         .disabled(!groups.contains(where: { $0.enabled }))
         .opacity(groups.contains(where: { $0.enabled }) ? 1 : 0.5)
+        .accessibilityIdentifier("setup.handItOver")
     }
 }
 

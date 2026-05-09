@@ -13,11 +13,14 @@ struct LockmasterPickerView: View {
                 VStack(alignment: .leading, spacing: 24) {
                     header
                     ForEach(Lockmaster.allCases) { lm in
-                        LockmasterCard(lockmaster: lm, isPro: lm.isPro && !subs.isPro)
-                            .onTapGesture {
-                                Haptics.tap()
-                                explainer = lm
-                            }
+                        Button {
+                            Haptics.tap()
+                            explainer = lm
+                        } label: {
+                            LockmasterCard(lockmaster: lm, isPro: lm.isPro && !subs.isPro)
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityIdentifier("picker.\(lm.rawValue)")
                     }
                 }
                 .padding(.horizontal, 20)
@@ -125,6 +128,7 @@ private struct LockmasterExplainerSheet: View {
 
                 Button("continue") { onContinue() }
                     .buttonStyle(BrassButtonStyle())
+                    .accessibilityIdentifier("explainer.continue")
             }
             .padding(24)
         }

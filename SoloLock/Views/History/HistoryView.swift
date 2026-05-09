@@ -155,6 +155,10 @@ private struct SessionRow: View {
     }
 
     private var durationText: String {
+        // For an interrupted-but-still-marked-running session (app crash mid-session),
+        // heldSeconds returns plannedSeconds which would be misleading. Skip in that
+        // case — the row badge already says "still running."
+        if session.outcome == .running { return "—" }
         let s = Int(session.heldSeconds)
         let h = s / 3600, m = (s % 3600) / 60
         return h > 0 ? "\(h)h \(m)m" : "\(m)m"
