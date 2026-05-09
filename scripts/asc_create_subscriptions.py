@@ -23,7 +23,7 @@ import argparse, hashlib, json, os, sys, time, urllib.error, urllib.request
 import jwt
 
 # === EDIT ME ===
-APP_ID            = "REPLACE_WITH_ASC_APP_ID"   # populate from scripts/env.sh APP_ID
+APP_ID            = "6767774134"
 GROUP_REFERENCE   = "Solo Lock Pro"
 GROUP_LOC_NAME    = "Solo Lock Pro"
 

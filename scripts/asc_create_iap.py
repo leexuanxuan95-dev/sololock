@@ -22,7 +22,7 @@ import argparse, hashlib, json, os, sys, time, urllib.error, urllib.request
 import jwt
 
 # === EDIT ME PER IAP ===
-APP_ID            = "REPLACE_WITH_ASC_APP_ID"   # populate from scripts/env.sh APP_ID
+APP_ID            = "6767774134"
 PRODUCT_ID        = "com.atrium.sololock.pro.lifetime"
 REFERENCE_NAME    = "Solo Lock Pro Lifetime"
 IAP_TYPE          = "NON_CONSUMABLE"

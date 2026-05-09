@@ -12,8 +12,7 @@ export ASC_KEY_PATH="/Users/augis/Downloads/AuthKey_T496HJC8M8.p8"
 export APP_NAME="Solo Lock: Focus Without Apps"
 export APP_SKU="solo-lock-ios-001"
 export BUNDLE_ID="com.atrium.sololock"
-# TODO after ASC "+ New App" — replace with the numeric App ID from the ASC URL.
-export APP_ID="REPLACE_WITH_ASC_APP_ID"
+export APP_ID="6767774134"
 
 export PROJECT_ROOT="/Users/augis/Desktop/toos/13_SOLOLOCK"
 export SCHEME="SoloLock"

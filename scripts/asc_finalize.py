@@ -29,7 +29,7 @@ import argparse, json, sys, time, urllib.error, urllib.request
 import jwt
 
 # === EDIT ME PER APP ===
-APP_ID         = "REPLACE_WITH_ASC_APP_ID"   # populate from scripts/env.sh APP_ID
+APP_ID         = "6767774134"
 BUNDLE_ID      = "com.atrium.sololock"
 VERSION_STRING = "1.0.0"
 APP_DISPLAY_NAME = "Solo Lock: Focus Without Apps"
