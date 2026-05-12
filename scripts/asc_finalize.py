@@ -82,136 +82,53 @@ MARKETING_URL  = "https://leexuanxuan95-dev.github.io/sololock/"
 SUPPORT_URL    = "https://leexuanxuan95-dev.github.io/sololock/support.html"
 PRIVACY_URL    = "https://leexuanxuan95-dev.github.io/sololock/privacy.html"
 
-REVIEWER_NOTES = """Solo Lock is a single-user phone-addiction commitment device.
+REVIEWER_NOTES = """Solo Lock is a self-commitment device for phone-addiction.
 
-RESPONSES TO PREVIOUS REVIEW FEEDBACK (Submissions 1 & 2):
+WHAT v1 IS vs IS NOT (transparent):
+v1 is a SELF-COMMITMENT device, not a system-level app blocker. The AI
+Judge / Random Delay lockmaster + Lock-screen countdown + emergency-hold
+flow ARE the commitment device. v1 does NOT call ManagedSettingsStore
+to block apps at the OS level — that ships in v1.1 once the Family
+Controls entitlement is granted. This is disclosed openly in the App
+Description and in the in-app "intent: apps to avoid" section.
 
-→ Guideline 2.3 (Accurate Metadata): the app description has been revised.
-  All mentions of Charity Lock and Friend Lock are REMOVED from the
-  description, screenshots, and promotional text. The v1 ships with
-  exactly TWO lockmasters: AI Judge and Random Delay — and the description
-  now reflects exactly that.
+FIXES vs PREVIOUS REJECTIONS:
+• G3.1.2(c): paywall now shows per-period prices ($4.99/mo, $24.99/yr,
+  $59 once), an auto-renew disclosure sentence, and tappable Terms of
+  Use + Privacy Policy Link views.
+• G2.1 (Charity): the Charity Lock card is REMOVED. v1 ships only
+  AI Judge + Random Delay.
+• G2.3 (Description): rewritten — no charity/friend mentions; explicit
+  about v1 being a commitment device with v1.1 adding real Screen Time.
+• G2.1(b) (IAPs not found): there are now THREE explicit paths.
 
-→ Guideline 2.1(b) (IAPs not found): there are now TWO equally obvious
-  entry points to the paywall (see step 4 below). The IAPs are visible in
-  the paywall in any of three locations.
+THREE WAYS TO REACH THE PAYWALL (any one works):
+A) Home screen: tap the prominent brass "Go Pro" button at the top.
+B) Settings tab: tap "see plans".
+C) Home → Random Delay → continue → Setup → tap 4h / 8h / overnight.
 
-→ Guideline 3.1.2(c) (Subscription disclosure): the paywall now contains
-  an auto-renewal disclosure sentence and tappable Terms of Use + Privacy
-  Policy Link views, plus per-period price suffixes ($4.99 / mo, etc.).
+The paywall shows all three IAPs:
+  com.atrium.sololock.pro.monthly  — $4.99/mo
+  com.atrium.sololock.pro.yearly   — $24.99/yr (BEST VALUE)
+  com.atrium.sololock.pro.lifetime — $59 once
+Plus tappable Terms of Use + Privacy Policy + Restore Purchases.
 
-================================================================
-HOW TO LOCATE AND TEST THE IN-APP PURCHASES — STEP BY STEP
-================================================================
+Paid Apps Agreement: Active. Sandbox StoreKit configured.
 
-1. Launch Solo Lock. The onboarding screen shows. Tap "pick your lockmaster"
-   at the bottom.
+HOW TO TEST THE LOCKMASTERS (no demo account needed):
+AI Judge (free): Home → AI Judge → continue → pick 15m → hand it over.
+  Tap "speak to the judge", type any message — algorithmic reply on-device,
+  no LLM, no network. The judge will not unlock — by design. 5-second
+  emergency hold → judge refusal screen.
+Random Delay (Pro): Same path; 5-second emergency hold reveals a
+  15-minute wait timer + 50-word reason field. Both required to unlock.
+Preview the Screen Time takeover UI via the "preview block" button on
+  the Lock screen (this shows the UX that v1.1 will fully wire up).
 
-2. The Home screen ("solo lock" header) now shows two lockmaster cards
-   (AI Judge, Random Delay) AND a brass "Go Pro — see plans" button at
-   the top of the screen.
+PRIVACY: AI Judge runs 100% on-device. No LLM, no network, no analytics.
+App Privacy survey answered "Data Not Collected".
 
-3. **EASIEST PATH TO THE PAYWALL (3 equally good options):**
-
-   OPTION A — Top of the Home screen: tap the brass "Go Pro" button.
-   OPTION B — Bottom tab bar: tap "Settings" → tap "see plans".
-   OPTION C — Bottom tab bar: tap "Home" → tap "Random Delay" card →
-              tap "continue" on the explainer → on the Setup screen,
-              tap any of the Pro-marked durations (4h, 8h, or overnight) →
-              the paywall opens automatically.
-
-   All three paths open the same paywall sheet which shows ALL THREE IAPs:
-
-     • Pro Monthly  — $4.99 / mo  (com.atrium.sololock.pro.monthly)
-     • Pro Yearly   — $24.99 / yr (com.atrium.sololock.pro.yearly)  [BEST VALUE]
-     • Lifetime     — $59 once    (com.atrium.sololock.pro.lifetime)
-
-   At the bottom of the paywall there is:
-     • An auto-renewal disclosure sentence
-     • A tappable "Terms of Use" link (opens https://leexuanxuan95-dev.github.io/sololock/terms.html)
-     • A tappable "Privacy Policy" link (opens https://leexuanxuan95-dev.github.io/sololock/privacy.html)
-     • A "Restore Purchases" button
-
-4. Pick any tier, tap "subscribe" or "buy lifetime". The standard Apple
-   sandbox StoreKit sheet appears. Enter the sandbox tester credentials.
-   On successful purchase the paywall dismisses and the entitlement
-   activates (Settings → Subscription will show "ACTIVE").
-
-5. PAID APPS AGREEMENT — confirmed accepted on our side. If the sandbox
-   purchase fails with "Cannot connect to iTunes Store" or similar,
-   please flag it so we can re-check on our end.
-
-================================================================
-HOW TO TEST THE TWO LOCKMASTERS
-================================================================
-
-AI JUDGE (free):
-  Home → "AI Judge" → "continue" → pick any duration → "hand it over".
-  Countdown begins. Tap "speak to the judge" — type any message — the
-  judge replies with a notarial, dry-humorous message generated entirely
-  on-device (no LLM, no network call). The judge will not unlock the
-  phone early — by design. Emergency button (5-second hold) shows a
-  refusal screen.
-
-RANDOM DELAY (Pro):
-  Home → "Random Delay" → "continue" → pick a duration → "hand it over".
-  Countdown begins. Emergency button (5-second hold) shows a 15-minute
-  wait timer + a 50-word reason text field. Both conditions must be met
-  to unlock.
-
-PREVIEW SCREEN TIME UI:
-  On the Lock screen, top-right "preview block" button shows the takeover
-  UI the user would see on a real device if they opened a blocked app.
-  (Real Family Controls integration ships in v1.1; v1 simulates with
-  StubBlocker so the UX is reviewable.)
-
-WHAT THE V1 LOCK ACTUALLY DOES (important for reviewer):
-
-Solo Lock v1 is a SELF-COMMITMENT DEVICE, not a system-level app blocker.
-This is by design and is clearly disclosed in the App Description and
-under the "intent: apps to avoid" section of the Setup screen.
-
-Concretely, the v1 lockmaster gives you THREE forms of friction that
-keep you from cancelling the session early:
-
-  • A persistent Lock screen with a count-down timer that cannot be
-    dismissed by background-swipe / Cmd-Q. The user must explicitly
-    tap "emergency unlock" to exit.
-  • The AI Judge — a notarial algorithmic chat that refuses to unlock
-    the session, even under user pressure. Each refusal is unique
-    (billions of combinations).
-  • The 5-second emergency-unlock hold + (for Random Delay) the 15-min
-    wait + 50-word reason gate.
-
-WHAT v1 DOES NOT DO (transparent disclosure):
-
-  • v1 does NOT use ManagedSettingsStore.shield.applications to actually
-    block Instagram/TikTok/etc at the OS level. The "apps to avoid"
-    toggles are a COMMITMENT log — they record what the user pledged
-    to avoid — they do not invoke iOS shielding.
-  • System-level shielding ships in v1.1 once we receive the Family
-    Controls (com.apple.developer.family-controls) entitlement from
-    Apple. This is openly stated in the in-app copy below the toggles
-    and in the App Description.
-
-If the reviewer needs to verify the commitment-device behavior:
-  • Start a 15-minute AI Judge session.
-  • Try to swipe away the Lock screen → it doesn't dismiss.
-  • Tap "speak to the judge" and ask it to unlock → it refuses.
-  • Tap "preview block" → see the takeover UI that ships at v1.1.
-  • 5-second hold "emergency unlock" → judge refusal screen.
-
-================================================================
-PRIVACY
-================================================================
-The AI Judge runs 100% on device — no LLM call, no network request, no
-analytics SDK. Session transcripts are stored only on the device. App
-Privacy survey answered "Data Not Collected".
-
-================================================================
-CONTACT
-================================================================
-Zhang Jiahao · jasperabundant@gmail.com · +60 17 702 3664
+CONTACT: Zhang Jiahao · jasperabundant@gmail.com · +60 17 702 3664
 We reply within 24 hours."""
 
 # Reviewer contact (Zhang Jiahao, per user instruction).
