@@ -23,8 +23,12 @@ struct SessionSetupView: View {
                     SectionLabel(text: "session length")
                     durationGrid
 
-                    SectionLabel(text: "apps to block")
+                    SectionLabel(text: "intent: apps to avoid")
                     blockedAppsList
+                    Text("These are the apps you commit to avoid this session. In v1 the lockmaster (AI Judge / Random Delay) is the commitment device; full iOS Screen Time shielding ships in v1.1.")
+                        .font(Typography.sohne(11))
+                        .foregroundColor(Palette.textTertiary)
+                        .padding(.horizontal, 4)
 
                     if lockmaster == .charity {
                         SectionLabel(text: "if you break early")

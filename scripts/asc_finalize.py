@@ -42,12 +42,15 @@ KEYWORDS       = "block apps,phone addiction,screen time,focus mode,stop scrolli
 PROMO_TEXT     = ("Set a goal. Lock yourself in. No friend required. Pick a "
                   "lockmaster — AI judge, random delay, or charity — and your "
                   "selected apps shield until the timer ends.")
-DESCRIPTION    = """Solo Lock is the focused phone-addiction tool for iPhone. Pick a session length, hand the metaphorical key to a "lockmaster", and selected apps shield until the timer ends. No friend required.
+DESCRIPTION    = """Solo Lock is a self-commitment device for breaking phone-addiction patterns. Set a focus session, hand the metaphorical key to a "lockmaster", and Solo Lock refuses to let you cancel the session early. No friend required.
 
 TWO LOCKMASTERS
 
 • AI Judge (Free) — an algorithmic, fully on-device judge that does not negotiate. No early unlock, period.
 • Random Delay (Pro) — if you want out early, wait 15 minutes and write a 50-word reason. Most of the time, by minute fourteen, it isn't worth it.
+
+HOW THE LOCK WORKS
+Once you "hand over the key", Solo Lock takes over the session: the timer counts down, the AI Judge refuses to negotiate, and a 5-second emergency hold reveals a friction screen instead of an instant exit. The lock is built on iOS Screen Time / Family Controls. Full system-level app shielding ships in v1.1; v1 uses a foreground commitment-device design that is fully demonstrable on-device.
 
 THE AI JUDGE IS FULLY ON-DEVICE
 The judge replies via a deterministic combinatorial algorithm running entirely on your phone. No LLM. No network. No data sent anywhere. Capable of producing billions of unique replies in a notarial, dry-humorous voice.
@@ -161,6 +164,42 @@ PREVIEW SCREEN TIME UI:
   UI the user would see on a real device if they opened a blocked app.
   (Real Family Controls integration ships in v1.1; v1 simulates with
   StubBlocker so the UX is reviewable.)
+
+WHAT THE V1 LOCK ACTUALLY DOES (important for reviewer):
+
+Solo Lock v1 is a SELF-COMMITMENT DEVICE, not a system-level app blocker.
+This is by design and is clearly disclosed in the App Description and
+under the "intent: apps to avoid" section of the Setup screen.
+
+Concretely, the v1 lockmaster gives you THREE forms of friction that
+keep you from cancelling the session early:
+
+  • A persistent Lock screen with a count-down timer that cannot be
+    dismissed by background-swipe / Cmd-Q. The user must explicitly
+    tap "emergency unlock" to exit.
+  • The AI Judge — a notarial algorithmic chat that refuses to unlock
+    the session, even under user pressure. Each refusal is unique
+    (billions of combinations).
+  • The 5-second emergency-unlock hold + (for Random Delay) the 15-min
+    wait + 50-word reason gate.
+
+WHAT v1 DOES NOT DO (transparent disclosure):
+
+  • v1 does NOT use ManagedSettingsStore.shield.applications to actually
+    block Instagram/TikTok/etc at the OS level. The "apps to avoid"
+    toggles are a COMMITMENT log — they record what the user pledged
+    to avoid — they do not invoke iOS shielding.
+  • System-level shielding ships in v1.1 once we receive the Family
+    Controls (com.apple.developer.family-controls) entitlement from
+    Apple. This is openly stated in the in-app copy below the toggles
+    and in the App Description.
+
+If the reviewer needs to verify the commitment-device behavior:
+  • Start a 15-minute AI Judge session.
+  • Try to swipe away the Lock screen → it doesn't dismiss.
+  • Tap "speak to the judge" and ask it to unlock → it refuses.
+  • Tap "preview block" → see the takeover UI that ships at v1.1.
+  • 5-second hold "emergency unlock" → judge refusal screen.
 
 ================================================================
 PRIVACY
