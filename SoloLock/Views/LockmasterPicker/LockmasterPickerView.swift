@@ -12,7 +12,7 @@ struct LockmasterPickerView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 24) {
                     header
-                    ForEach(Lockmaster.allCases) { lm in
+                    ForEach(Lockmaster.allCases.filter { $0.availableInV1 }) { lm in
                         Button {
                             Haptics.tap()
                             explainer = lm

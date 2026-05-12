@@ -65,7 +65,7 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: com.atrium.sololock
         PRODUCT_NAME: SoloLock
         MARKETING_VERSION: "1.0.0"
-        CURRENT_PROJECT_VERSION: "3"
+        CURRENT_PROJECT_VERSION: "5"
         GENERATE_INFOPLIST_FILE: NO
         # Repeat per-target so it survives extension targets later.
         TARGETED_DEVICE_FAMILY: "1"

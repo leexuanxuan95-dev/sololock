@@ -18,12 +18,36 @@ struct PaywallView: View {
                     bullets
                     plans
                     cta
+                    legalDisclosure
                     footer
                 }
                 .padding(.horizontal, 22)
                 .padding(.bottom, 24)
             }
         }
+    }
+
+    /// Apple Guideline 3.1.2(c): subscriptions must disclose auto-renew terms
+    /// and link to both Privacy Policy and Terms of Use (EULA) inside the
+    /// purchase flow itself, not just in metadata.
+    private var legalDisclosure: some View {
+        VStack(spacing: 8) {
+            Text("Subscriptions auto-renew until cancelled. Cancel anytime in iOS Settings → Apple ID → Subscriptions, at least 24 hours before the end of the current period.")
+                .font(Typography.sohne(11))
+                .foregroundColor(Palette.textTertiary)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, 6)
+            HStack(spacing: 14) {
+                Link("Terms of Use", destination: URL(string: "https://leexuanxuan95-dev.github.io/sololock/terms.html")!)
+                    .accessibilityIdentifier("paywall.terms")
+                Text("·").foregroundColor(Palette.textTertiary)
+                Link("Privacy Policy", destination: URL(string: "https://leexuanxuan95-dev.github.io/sololock/privacy.html")!)
+                    .accessibilityIdentifier("paywall.privacy")
+            }
+            .font(Typography.sohne(12, weight: .semibold))
+            .tint(Palette.brass)
+        }
+        .padding(.top, 4)
     }
 
     private var header: some View {
@@ -76,18 +100,21 @@ struct PaywallView: View {
                 // fallbacks so the paywall always renders the offering and
                 // App Review screenshots aren't blank "loading…" placeholders.
                 FallbackPlanRow(id: SubscriptionStore.monthlyID,
-                                title: "Pro Monthly", subtitle: "All Pro features.",
-                                price: "$4.99", badge: nil,
+                                title: "Pro Monthly",
+                                subtitle: "Auto-renewable, billed every month.",
+                                price: "$4.99 / mo", badge: nil,
                                 selected: selectedID == SubscriptionStore.monthlyID)
                     .onTapGesture { Haptics.tap(); selectedID = SubscriptionStore.monthlyID }
                 FallbackPlanRow(id: SubscriptionStore.yearlyID,
-                                title: "Pro Yearly", subtitle: "Billed annually. ~58% savings.",
-                                price: "$24.99", badge: "BEST VALUE",
+                                title: "Pro Yearly",
+                                subtitle: "Auto-renewable, billed every 12 months. ~58% off.",
+                                price: "$24.99 / yr", badge: "BEST VALUE",
                                 selected: selectedID == SubscriptionStore.yearlyID)
                     .onTapGesture { Haptics.tap(); selectedID = SubscriptionStore.yearlyID }
                 FallbackPlanRow(id: SubscriptionStore.lifetimeID,
-                                title: "Lifetime", subtitle: "One-time purchase.",
-                                price: "$59", badge: nil,
+                                title: "Lifetime",
+                                subtitle: "One-time purchase. No renewal.",
+                                price: "$59 once", badge: nil,
                                 selected: selectedID == SubscriptionStore.lifetimeID)
                     .onTapGesture { Haptics.tap(); selectedID = SubscriptionStore.lifetimeID }
                 if let err = subs.loadError {
@@ -256,7 +283,9 @@ private struct PlanRow: View {
                     .foregroundColor(Palette.textSecondary)
             }
             Spacer()
-            Text(product.displayPrice)
+            // Apple Guideline 3.1.2(c) requires the subscription period to be
+            // displayed alongside the price in the purchase flow.
+            Text("\(product.displayPrice)\(periodSuffix)")
                 .font(Typography.plexMono(15, weight: .medium))
                 .foregroundColor(Palette.cream)
         }
@@ -269,5 +298,20 @@ private struct PlanRow: View {
                         .stroke(selected ? Palette.brass : Palette.hairline, lineWidth: selected ? 1.5 : 1)
                 )
         )
+        .accessibilityIdentifier("plan.\(product.id)")
+    }
+
+    private var periodSuffix: String {
+        // Subscriptions expose .subscription with a unit; non-consumables don't.
+        guard let unit = product.subscription?.subscriptionPeriod.unit else {
+            return " once"
+        }
+        switch unit {
+        case .day:   return " / day"
+        case .week:  return " / wk"
+        case .month: return " / mo"
+        case .year:  return " / yr"
+        @unknown default: return ""
+        }
     }
 }

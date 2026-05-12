@@ -85,39 +85,54 @@ PRIVACY_URL    = "https://leexuanxuan95-dev.github.io/sololock/privacy.html"
 
 REVIEWER_NOTES = """Solo Lock is a single-user phone-addiction commitment device.
 
-How to test the core flows (no demo account required — app works fully offline):
+RESPONSES TO PREVIOUS REVIEW (Submission 1, rejected 2026-05-10):
 
-1. First launch: tap "pick your lockmaster" on the onboarding screen.
+Guideline 3.1.2(c) — Subscription disclosure:
+This build adds a legal disclosure footer to the paywall containing:
+  • Auto-renewal terms ("Subscriptions auto-renew until cancelled.
+    Cancel anytime in iOS Settings → Apple ID → Subscriptions, at least
+    24 hours before the end of the current period.")
+  • Functional Terms of Use link → https://leexuanxuan95-dev.github.io/sololock/terms.html
+  • Functional Privacy Policy link → https://leexuanxuan95-dev.github.io/sololock/privacy.html
+Each plan row now also shows the period explicitly: "$4.99 / mo",
+"$24.99 / yr", "$59 once". Links are tappable Link views that open the
+URL in Safari.
 
-2. Tap any lockmaster card → tap "continue" on the explainer sheet.
+Guideline 2.1 — Charity Lock question:
+We have removed the Charity Lock card and the Friend card from this v1
+build. Only "AI Judge" (free) and "Random Delay" ($) cards are visible in
+the picker. The Charity Lock and Friend features ship in v1.1, once the
+501(c)(3)-compatible payment partner is finalized — we did not want to
+expose a feature we cannot fully demonstrate in this submission.
 
-3. Setup screen: pick a duration (15 m / 30 m / 1 h / 4 h / 8 h / overnight).
-   Toggle which app categories to block. Tap "hand it over" — the lock activates and the countdown begins.
+HOW TO TEST THE v1 BUILD:
 
-4. AI JUDGE FLOW:
-   - On the Lock screen, tap "speak to the judge".
-   - Type any message and tap send. The judge replies algorithmically on-device.
-   - The judge will not unlock the phone early. By design.
+1. First launch → tap "pick your lockmaster" on onboarding.
+2. Tap either "AI Judge" or "Random Delay" → "continue".
+3. Setup screen: pick a duration (15 m / 30 m / 1 h are free; 4 h / 8 h /
+   overnight require Pro). Toggle which app categories to block.
+   Tap "hand it over" → countdown begins.
+4. AI JUDGE: tap "speak to the judge" → type any message → algorithmic
+   on-device reply (no LLM, no network).
+5. EMERGENCY UNLOCK:
+   • AI Judge: 5-second hold → judge refusal screen (by design).
+   • Random Delay: 5-second hold → 15-minute wait + 50-word reason field.
+6. SCREEN TIME: v1 ships with a simulated blocker; the "preview block"
+   button on the Lock screen shows the takeover UX. The real Family
+   Controls hookup ships in v1.1 once entitlement is granted.
 
-5. EMERGENCY UNLOCK (varies by lockmaster):
-   - AI Judge: tap-and-hold the "emergency unlock" button for 5 seconds → judge refusal screen. By design — no early unlock with this lockmaster.
-   - Random Delay: same hold → 15-minute countdown screen + 50-word reason field. Submit when both conditions met.
-   - Charity Lock: same hold → "$X to <charity>" confirmation. Tap "confirm donation and unlock".
+IN-APP PURCHASES — 3 IAPs visible on the paywall, all submitted:
 
-6. SCREEN TIME / FAMILY CONTROLS:
-   This v1 ships with a simulated blocker (StubBlocker) that surfaces the takeover screen via the "preview block" button on the Lock screen. The real Family Controls integration ships in v1.1 once the entitlement is granted by Apple. The takeover UI is fully demonstrable via the preview button.
-
-IN-APP PURCHASES — all 3 visible on the paywall, all submitted with this version:
-
-• com.atrium.sololock.pro.monthly — $4.99/mo auto-renewable subscription
-• com.atrium.sololock.pro.yearly  — $24.99/yr auto-renewable subscription
+• com.atrium.sololock.pro.monthly  — $4.99 / mo auto-renewable subscription
+• com.atrium.sololock.pro.yearly   — $24.99 / yr auto-renewable subscription
 • com.atrium.sololock.pro.lifetime — $59 NON_CONSUMABLE one-time unlock
 
-To test IAPs: Settings tab → "see plans" → choose tier → Subscribe.
-Restore via the "restore purchases" button on the paywall or in Settings.
-Cancel via iOS Settings → Apple ID → Subscriptions.
+To test: Settings tab → "see plans" → tap a tier → "subscribe" or
+"buy lifetime". Restore via the "restore purchases" button on the paywall
+or in Settings → Subscription. Cancel via iOS Settings → Apple ID →
+Subscriptions.
 
-If anything is unclear, please email jasperabundant@gmail.com — we reply within 24 hours."""
+Contact: jasperabundant@gmail.com / +60 17 702 3664"""
 
 # Reviewer contact (Zhang Jiahao, per user instruction).
 CONTACT_FIRST = "Zhang"

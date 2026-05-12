@@ -44,6 +44,18 @@ enum Lockmaster: String, Codable, CaseIterable, Identifiable, Hashable {
         }
     }
 
+    /// Whether this lockmaster is exposed in the v1 build. Charity Lock and
+    /// Friend require infrastructure that ships in v1.1 (charity payment
+    /// partner; friend-key invite flow), so we hide their cards now —
+    /// per the Cleanup runbook §3.3 rule "don't show IAPs/features you can't
+    /// fully demonstrate to App Review."
+    var availableInV1: Bool {
+        switch self {
+        case .aiJudge, .randomDelay: return true
+        case .charity, .friend: return false
+        }
+    }
+
     var explainer: String {
         switch self {
         case .aiJudge:

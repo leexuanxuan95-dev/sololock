@@ -89,22 +89,23 @@ final class SoloLockUITests: XCTestCase {
         attach("06-chat", app: app)
     }
 
-    // MARK: - Picker → Charity Lock → Setup screen with charity controls
+    // MARK: - Picker → Random Delay → Setup screen
+    // (Charity Lock + Friend cards are hidden in v1; deferred to v1.1.)
 
-    func test03_charityLockSetup() {
+    func test03_randomDelaySetup() {
         let app = makeApp()
         app.launch()
 
-        let charityCard = findAny("picker.charity", in: app)
-        XCTAssertTrue(charityCard.waitForExistence(timeout: coldStartTimeout))
-        charityCard.tap()
+        let card = findAny("picker.random_delay", in: app)
+        XCTAssertTrue(card.waitForExistence(timeout: coldStartTimeout))
+        card.tap()
         let cont = app.buttons["explainer.continue"]
         XCTAssertTrue(cont.waitForExistence(timeout: warmTimeout))
         cont.tap()
 
         let thirty = findAny("duration.m30", in: app)
         XCTAssertTrue(thirty.waitForExistence(timeout: warmTimeout))
-        attach("08-charity-setup", app: app)
+        attach("08-random-delay-setup", app: app)
     }
 
     // MARK: - History tab
