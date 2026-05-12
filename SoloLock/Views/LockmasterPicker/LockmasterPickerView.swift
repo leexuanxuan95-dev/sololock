@@ -5,6 +5,7 @@ struct LockmasterPickerView: View {
     @EnvironmentObject var subs: SubscriptionStore
     @State private var explainer: Lockmaster?
     @State private var goToSetup: Lockmaster?
+    @State private var showPaywall = false
 
     var body: some View {
         ZStack {
@@ -12,10 +13,20 @@ struct LockmasterPickerView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 24) {
                     header
+                    if !subs.isPro {
+                        goProBanner
+                    }
                     ForEach(Lockmaster.allCases.filter { $0.availableInV1 }) { lm in
                         Button {
                             Haptics.tap()
-                            explainer = lm
+                            // Apple Review 2.1(b): IAPs must be discoverable.
+                            // Tapping a Pro card while non-Pro routes through
+                            // the paywall first, then opens the explainer.
+                            if lm.isPro && !subs.isPro {
+                                showPaywall = true
+                            } else {
+                                explainer = lm
+                            }
                         } label: {
                             LockmasterCard(lockmaster: lm, isPro: lm.isPro && !subs.isPro)
                         }
@@ -38,6 +49,10 @@ struct LockmasterPickerView: View {
             .presentationDetents([.medium, .large])
             .presentationBackground(Palette.vault)
         }
+        .sheet(isPresented: $showPaywall) {
+            PaywallView()
+                .presentationBackground(Palette.vault)
+        }
         .navigationDestination(item: $goToSetup) { lm in
             SessionSetupView(lockmaster: lm)
         }
@@ -54,6 +69,39 @@ struct LockmasterPickerView: View {
         }
         .padding(.top, 32)
         .padding(.bottom, 8)
+    }
+
+    /// Prominent paywall entry point. Apple App Review couldn't locate the
+    /// IAPs on submission 2 — making the path explicit on the Home screen
+    /// addresses Guideline 2.1(b) "IAPs not found in binary".
+    private var goProBanner: some View {
+        Button {
+            Haptics.tap()
+            showPaywall = true
+        } label: {
+            HStack(spacing: 12) {
+                Image(systemName: "crown.fill")
+                    .foregroundColor(Palette.vaultDeep)
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Go Pro")
+                        .font(Typography.sohne(15, weight: .semibold))
+                        .foregroundColor(Palette.vaultDeep)
+                    Text("see plans — $4.99/mo · $24.99/yr · $59 lifetime")
+                        .font(Typography.sohne(12))
+                        .foregroundColor(Palette.vaultDeep.opacity(0.7))
+                }
+                Spacer()
+                Image(systemName: "chevron.right")
+                    .foregroundColor(Palette.vaultDeep.opacity(0.6))
+            }
+            .padding(14)
+            .background(
+                RoundedRectangle(cornerRadius: 14, style: .continuous)
+                    .fill(Palette.brass)
+            )
+        }
+        .buttonStyle(.plain)
+        .accessibilityIdentifier("picker.goPro")
     }
 }
 

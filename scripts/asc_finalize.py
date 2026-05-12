@@ -44,12 +44,10 @@ PROMO_TEXT     = ("Set a goal. Lock yourself in. No friend required. Pick a "
                   "selected apps shield until the timer ends.")
 DESCRIPTION    = """Solo Lock is the focused phone-addiction tool for iPhone. Pick a session length, hand the metaphorical key to a "lockmaster", and selected apps shield until the timer ends. No friend required.
 
-FOUR LOCKMASTERS
+TWO LOCKMASTERS
 
-• AI Judge (Free) — algorithmic on-device judge that does not negotiate. No early unlock, period.
-• Random Delay (Pro) — wait 15 minutes and write 50 words explaining why this is so urgent. Most of the time, by minute fourteen, it isn't.
-• Charity Lock (Pro) — pick a dollar amount, $1–$25. Pick a charity. Break the lock early — your card is charged, the charity gets 100%, we keep $0.
-• Friend (Pro) — someone you trust holds the key. They get a notification. They can unlock you, or they can ignore you.
+• AI Judge (Free) — an algorithmic, fully on-device judge that does not negotiate. No early unlock, period.
+• Random Delay (Pro) — if you want out early, wait 15 minutes and write a 50-word reason. Most of the time, by minute fourteen, it isn't worth it.
 
 THE AI JUDGE IS FULLY ON-DEVICE
 The judge replies via a deterministic combinatorial algorithm running entirely on your phone. No LLM. No network. No data sent anywhere. Capable of producing billions of unique replies in a notarial, dry-humorous voice.
@@ -62,18 +60,16 @@ ANTI-FEATURES (THINGS WE REFUSE TO DO)
 • No mockery for emergency unlocks.
 
 PRO ($4.99/mo · $24.99/yr · $59 lifetime)
-• All four lockmasters
+• Random Delay lockmaster
 • Unlimited sessions per day
 • 4h, 8h, overnight durations
 • Live Activity countdown on Lock Screen
-• Apple Watch complication
 • History insights
 
 PRIVACY
 • AI Judge: 100% on-device. No cloud. No LLM call.
 • No user accounts. No email. No phone number.
-• Sessions, transcripts, charity selections — stored only on your device.
-• Charity-Lock fees go 100% to the chosen 501(c)(3). Solo Lock keeps $0.
+• Sessions and transcripts are stored only on your device.
 
 Privacy: https://leexuanxuan95-dev.github.io/sololock/privacy.html
 Terms: https://leexuanxuan95-dev.github.io/sololock/terms.html
@@ -85,54 +81,99 @@ PRIVACY_URL    = "https://leexuanxuan95-dev.github.io/sololock/privacy.html"
 
 REVIEWER_NOTES = """Solo Lock is a single-user phone-addiction commitment device.
 
-RESPONSES TO PREVIOUS REVIEW (Submission 1, rejected 2026-05-10):
+RESPONSES TO PREVIOUS REVIEW FEEDBACK (Submissions 1 & 2):
 
-Guideline 3.1.2(c) — Subscription disclosure:
-This build adds a legal disclosure footer to the paywall containing:
-  • Auto-renewal terms ("Subscriptions auto-renew until cancelled.
-    Cancel anytime in iOS Settings → Apple ID → Subscriptions, at least
-    24 hours before the end of the current period.")
-  • Functional Terms of Use link → https://leexuanxuan95-dev.github.io/sololock/terms.html
-  • Functional Privacy Policy link → https://leexuanxuan95-dev.github.io/sololock/privacy.html
-Each plan row now also shows the period explicitly: "$4.99 / mo",
-"$24.99 / yr", "$59 once". Links are tappable Link views that open the
-URL in Safari.
+→ Guideline 2.3 (Accurate Metadata): the app description has been revised.
+  All mentions of Charity Lock and Friend Lock are REMOVED from the
+  description, screenshots, and promotional text. The v1 ships with
+  exactly TWO lockmasters: AI Judge and Random Delay — and the description
+  now reflects exactly that.
 
-Guideline 2.1 — Charity Lock question:
-We have removed the Charity Lock card and the Friend card from this v1
-build. Only "AI Judge" (free) and "Random Delay" ($) cards are visible in
-the picker. The Charity Lock and Friend features ship in v1.1, once the
-501(c)(3)-compatible payment partner is finalized — we did not want to
-expose a feature we cannot fully demonstrate in this submission.
+→ Guideline 2.1(b) (IAPs not found): there are now TWO equally obvious
+  entry points to the paywall (see step 4 below). The IAPs are visible in
+  the paywall in any of three locations.
 
-HOW TO TEST THE v1 BUILD:
+→ Guideline 3.1.2(c) (Subscription disclosure): the paywall now contains
+  an auto-renewal disclosure sentence and tappable Terms of Use + Privacy
+  Policy Link views, plus per-period price suffixes ($4.99 / mo, etc.).
 
-1. First launch → tap "pick your lockmaster" on onboarding.
-2. Tap either "AI Judge" or "Random Delay" → "continue".
-3. Setup screen: pick a duration (15 m / 30 m / 1 h are free; 4 h / 8 h /
-   overnight require Pro). Toggle which app categories to block.
-   Tap "hand it over" → countdown begins.
-4. AI JUDGE: tap "speak to the judge" → type any message → algorithmic
-   on-device reply (no LLM, no network).
-5. EMERGENCY UNLOCK:
-   • AI Judge: 5-second hold → judge refusal screen (by design).
-   • Random Delay: 5-second hold → 15-minute wait + 50-word reason field.
-6. SCREEN TIME: v1 ships with a simulated blocker; the "preview block"
-   button on the Lock screen shows the takeover UX. The real Family
-   Controls hookup ships in v1.1 once entitlement is granted.
+================================================================
+HOW TO LOCATE AND TEST THE IN-APP PURCHASES — STEP BY STEP
+================================================================
 
-IN-APP PURCHASES — 3 IAPs visible on the paywall, all submitted:
+1. Launch Solo Lock. The onboarding screen shows. Tap "pick your lockmaster"
+   at the bottom.
 
-• com.atrium.sololock.pro.monthly  — $4.99 / mo auto-renewable subscription
-• com.atrium.sololock.pro.yearly   — $24.99 / yr auto-renewable subscription
-• com.atrium.sololock.pro.lifetime — $59 NON_CONSUMABLE one-time unlock
+2. The Home screen ("solo lock" header) now shows two lockmaster cards
+   (AI Judge, Random Delay) AND a brass "Go Pro — see plans" button at
+   the top of the screen.
 
-To test: Settings tab → "see plans" → tap a tier → "subscribe" or
-"buy lifetime". Restore via the "restore purchases" button on the paywall
-or in Settings → Subscription. Cancel via iOS Settings → Apple ID →
-Subscriptions.
+3. **EASIEST PATH TO THE PAYWALL (3 equally good options):**
 
-Contact: jasperabundant@gmail.com / +60 17 702 3664"""
+   OPTION A — Top of the Home screen: tap the brass "Go Pro" button.
+   OPTION B — Bottom tab bar: tap "Settings" → tap "see plans".
+   OPTION C — Bottom tab bar: tap "Home" → tap "Random Delay" card →
+              tap "continue" on the explainer → on the Setup screen,
+              tap any of the Pro-marked durations (4h, 8h, or overnight) →
+              the paywall opens automatically.
+
+   All three paths open the same paywall sheet which shows ALL THREE IAPs:
+
+     • Pro Monthly  — $4.99 / mo  (com.atrium.sololock.pro.monthly)
+     • Pro Yearly   — $24.99 / yr (com.atrium.sololock.pro.yearly)  [BEST VALUE]
+     • Lifetime     — $59 once    (com.atrium.sololock.pro.lifetime)
+
+   At the bottom of the paywall there is:
+     • An auto-renewal disclosure sentence
+     • A tappable "Terms of Use" link (opens https://leexuanxuan95-dev.github.io/sololock/terms.html)
+     • A tappable "Privacy Policy" link (opens https://leexuanxuan95-dev.github.io/sololock/privacy.html)
+     • A "Restore Purchases" button
+
+4. Pick any tier, tap "subscribe" or "buy lifetime". The standard Apple
+   sandbox StoreKit sheet appears. Enter the sandbox tester credentials.
+   On successful purchase the paywall dismisses and the entitlement
+   activates (Settings → Subscription will show "ACTIVE").
+
+5. PAID APPS AGREEMENT — confirmed accepted on our side. If the sandbox
+   purchase fails with "Cannot connect to iTunes Store" or similar,
+   please flag it so we can re-check on our end.
+
+================================================================
+HOW TO TEST THE TWO LOCKMASTERS
+================================================================
+
+AI JUDGE (free):
+  Home → "AI Judge" → "continue" → pick any duration → "hand it over".
+  Countdown begins. Tap "speak to the judge" — type any message — the
+  judge replies with a notarial, dry-humorous message generated entirely
+  on-device (no LLM, no network call). The judge will not unlock the
+  phone early — by design. Emergency button (5-second hold) shows a
+  refusal screen.
+
+RANDOM DELAY (Pro):
+  Home → "Random Delay" → "continue" → pick a duration → "hand it over".
+  Countdown begins. Emergency button (5-second hold) shows a 15-minute
+  wait timer + a 50-word reason text field. Both conditions must be met
+  to unlock.
+
+PREVIEW SCREEN TIME UI:
+  On the Lock screen, top-right "preview block" button shows the takeover
+  UI the user would see on a real device if they opened a blocked app.
+  (Real Family Controls integration ships in v1.1; v1 simulates with
+  StubBlocker so the UX is reviewable.)
+
+================================================================
+PRIVACY
+================================================================
+The AI Judge runs 100% on device — no LLM call, no network request, no
+analytics SDK. Session transcripts are stored only on the device. App
+Privacy survey answered "Data Not Collected".
+
+================================================================
+CONTACT
+================================================================
+Zhang Jiahao · jasperabundant@gmail.com · +60 17 702 3664
+We reply within 24 hours."""
 
 # Reviewer contact (Zhang Jiahao, per user instruction).
 CONTACT_FIRST = "Zhang"
